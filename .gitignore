@@ -1,0 +1,9 @@
+venv
+*.pyc
+staticfiles
+.idea
+hackday2013Q4/.DS_Store
+gunicorn.error.log
+.DS_Store
+*.log
+
