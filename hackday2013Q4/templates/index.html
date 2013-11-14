@@ -37,26 +37,30 @@
         </button>
         <a href="#" class="navbar-brand logo">Flickr Route</a>
       </div>
+
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right input">
+        <ul class="nav navbar-nav navbar-right input" style="display: inline-block; vertical-align: middle; margin-top:8px;">
           <li>
               <input type="text" class="form-control" id="inputEmail1" placeholder="origin" ng-model="origin" name="origin" required auto-fill-sync>
 
           </li>
           <li>
-              <hr width="30" height="100">
+              <hr width="15" height="50">
 
           </li>
           <li>
               <input type="text" class="form-control" id="inputEmail1" placeholder="destination" ng-model="destination" name="destination" required auto-fill-sync>
 
           </li>
-           <li>
-              <span></span>
+          <li>
+              <hr width="15" height="50">
 
           </li>
           <li>
              <button class="btn btn-primary" ng-click="search()">Search!</button>
+          </li>
+          <li>
+              <hr width="5" height="50">
           </li>
         </ul>
       </div>
@@ -79,7 +83,7 @@
                 draggable="true"
                 fit="false"
                 events="eventsProperty"
-                style="height: 1000px; width: 100%">
+                style="height: 800px; width: 80%; margin-top: 55px; margin-left: 10%;">
         </div>
 
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
