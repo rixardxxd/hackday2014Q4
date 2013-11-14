@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Food2Cube</title>
+  <title>Flickr Route</title>
   <meta name="viewport" content="width=device-width">
 
 
@@ -16,7 +16,7 @@
 
   <!-- endbuild -->
 </head>
-<body >
+<body ng-controller="mapController">
   <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
@@ -70,6 +70,25 @@
 
 
 
+        <!--        You can use either a div having class 'google-map' or the '<google-map>' element; in
+                        the latter case, uncomment the style above to make sure the custom elements gets block display        -->
+
+        <div class="google-map"
+                center="position.coords"
+                zoom="zoomProperty"
+                markers="markersProperty"
+                latitude="clickedLatitudeProperty"
+                longitude="clickedLongitudeProperty"
+                mark-click="true"
+                draggable="true"
+                fit="false"
+                events="eventsProperty"
+                style="height: 1000px; width: 100%">
+        </div>
+
+
+
+
 
 
   <script src="//code.jquery.com/jquery.js"></script>
@@ -82,6 +101,12 @@
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="static/mainSite/app/scripts/ui-bootstrap-tpls-0.6.0.min.js"></script>
   <script src="static/mainSite/app/scripts/app.js"></script>
+  <script src="static/mainSite/css/index.css"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false&language=en"></script>
+  <script src="static/mainSite/app/scripts/angular-google-maps.js"></script>
+  <script src="static/mainSite/app/scripts/controllers/mapController.js"></script>
+
+
 
   <!-- endbuild -->
 </body>
