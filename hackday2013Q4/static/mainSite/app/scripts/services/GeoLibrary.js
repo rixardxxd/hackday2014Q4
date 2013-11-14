@@ -23,10 +23,15 @@ angular.module('hackday')
 
     functions.getGeoByAddress = function(address)
     {
-
+        test();
 
 
     };
 
     return functions;
   }]);
+
+function test()
+{
+    console.log("TestData");
+}
