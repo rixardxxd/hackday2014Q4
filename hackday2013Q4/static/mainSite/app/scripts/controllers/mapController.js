@@ -7,7 +7,8 @@ angular.module('hackday', ['google-maps'])
 
     $scope.NaviEntity = {
         from:{ address:'', latlng:{}},
-        to:{ address:'', latlng:{}}
+        to:{ address:'', latlng:{}},
+        routes: [{id:0, points:[]}, {id:1, points:[]} ]
     }
 
     $scope.centerProperty =
@@ -15,7 +16,6 @@ angular.module('hackday', ['google-maps'])
                 latitude: 37.4168811,
                 longitude: -122.02561550000001
             };
-
 
 
     angular.extend($scope,
@@ -199,7 +199,7 @@ angular.module('hackday', ['google-maps'])
                    var server = photo.server;
                    var id = photo.id;
                    var secret = photo.secret;
-                   var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                   var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_n.jpg';
                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
 
                    var object = {};

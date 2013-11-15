@@ -102,5 +102,22 @@
        style="height: 750px; width: 80%; margin-top: 55px; margin-left: 10%;">
   </div>
 
+  <div>
+      <table>
+          <tr>
+              <th>ID</th>
+              <th>Distance</th>
+              <!--<th>Time Est.</th>-->
+          </tr>
+          <tr ng-repeat="route in NaviEntity.routes">
+              <td>{{ route.id }}</td>
+              <td>{{ route.points }}</td>
+          </tr>
+
+
+
+      </table>
+  </div>
+
 </body>
 </html>
