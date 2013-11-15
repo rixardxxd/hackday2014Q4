@@ -171,7 +171,14 @@ angular.module('hackday', ['google-maps'])
 
     function addMarker(latlng)
     {
-
+        var circleIcon={
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: 'green',
+            fillOpacity: 0.6,
+            strokeColor: 'green',
+            strokeWeight: 2
+        };
         GeoLibrary.getFlickrAPI(latlng.pb,latlng.ob,radius,false).then
         (
               function(json)
@@ -206,6 +213,7 @@ angular.module('hackday', ['google-maps'])
                    object.longitude = latlng.pb;
                    object.latitude = latlng.ob;
                    object.infoWindow = '<div><a href="'+url+'" ><img src="'+url_t+'"></a></div>';
+                   object.icon = circleIcon;
                    $scope.markersProperty.push(object);
 
                    //console.log("UniquePhotos : "+JSON.stringify(location));
@@ -223,7 +231,7 @@ angular.module('hackday', ['google-maps'])
                            object.longitude = location.longitude;
                            object.latitude = location.latitude;
                            object.infoWindow = '<div class=\"infoWindow\"><h5>'+((title==null)?'Untitled':title)+'</h5><a href="'+ url +'" ><img src="'+url_t+'"></a><br>Views:'+views+'</div>';
-
+                           object.icon = circleIcon;
                        }
 
                    )

@@ -4,18 +4,8 @@ angular.module('hackday', ['ngRoute',"google-maps"])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-
         templateUrl: 'static/mainSite/app/views/company.html',
-        controller: 'CompanyCtrl'
-      })
-      .when('/company/:companyName', {
-        templateUrl: 'static/mainSite/app/views/restaurant.html',
-        controller: 'RestaurantCtrl'
-
-        })
-      .when('/checkout', {
-        templateUrl: 'static/mainSite/app/views/checkout.html',
-        controller: 'CheckoutCtrl'
+        controller: 'mapController'
       })
       .otherwise({
         redirectTo: '/'

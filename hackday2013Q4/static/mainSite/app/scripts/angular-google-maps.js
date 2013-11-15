@@ -159,7 +159,14 @@
           }
         
           if (_instance.getZoom() != that.zoom) {
+            //Ocean, change icon scale accordingly
+            //var diff = that.zoom - _instance.getZoom();
+            //for(var i=0;i<this.markers.length;i++)
+            //    this.markers[i].icon.scale = this.markers[i].icon.scale+diff;
+
+
             _instance.setZoom(that.zoom);
+
           }          
         }
       };
