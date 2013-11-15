@@ -11,9 +11,22 @@
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
   <link href="http://fonts.googleapis.com/css?family=Finger+Paint|Quattrocento+Sans" rel="stylesheet" type="text/css">
 
-  <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"> -->
 
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-sanitize.min.js"></script>
 
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="static/mainSite/app/scripts/ui-bootstrap-tpls-0.6.0.min.js"></script>
+  <script src="static/mainSite/app/scripts/app.js"></script>
+
+  <script src="static/mainSite/css/index.css"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDlmzIwnsi5U6effDsCZmolOHJntNonFbE&sensor=false&language=en"></script>
+  <script src="static/mainSite/app/scripts/angular-google-maps.js"></script>
+  <script src="static/mainSite/app/scripts/controllers/mapController.js"></script>
   <!-- endbuild -->
 </head>
 <body ng-controller="mapController">
@@ -57,7 +70,7 @@
 
           </li>
           <li>
-             <button class="btn btn-primary" ng-click="search()">Search!</button>
+             <button class="btn btn-primary" ng-click="search(origin, destination)">Search!</button>
           </li>
           <li>
               <hr width="5" height="50">
@@ -70,40 +83,27 @@
   <!-- modal -->
   <!-- signin -->
 
-        <!--        You can use either a div having class 'google-map' or the '<google-map>' element; in
-                        the latter case, uncomment the style above to make sure the custom elements gets block display        -->
+  <!--        You can use either a div having class 'google-map' or the '<google-map>' element; in
+  the latter case, uncomment the style above to make sure the custom elements gets block display        -->
 
-        <div class="google-map"
-                center="position.coords"
-                zoom="zoomProperty"
-                markers="markersProperty"
-                latitude="clickedLatitudeProperty"
-                longitude="clickedLongitudeProperty"
-                mark-click="true"
-                draggable="true"
-                fit="false"
-                events="eventsProperty"
-                style="height: 800px; width: 80%; margin-top: 55px; margin-left: 10%;">
-        </div>
+  <div class="google-map"
+       center="centerProperty"
+       zoom="zoomProperty"
+       markers="markersProperty"
+       latitude="clickedLatitudeProperty"
+       longitude="clickedLongitudeProperty"
+       mark-click="false"
+       draggable="true"
+       fit="false"
+       events="eventsProperty"
+       style="height: 500px; width: 80%; margin-top: 55px; margin-left: 10%;">
+  </div>
 
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-sanitize.min.js"></script>
-
-  <!-- build:js({.tmp,app}) scripts/scripts.js -->
-  <script src="static/mainSite/app/scripts/ui-bootstrap-tpls-0.6.0.min.js"></script>
-  <script src="static/mainSite/app/scripts/app.js"></script>
-
-  <script src="static/mainSite/css/index.css"></script>
-  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDlmzIwnsi5U6effDsCZmolOHJntNonFbE&sensor=false&language=en"></script>
-  <script src="static/mainSite/app/scripts/angular-google-maps.js"></script>
-  <script src="static/mainSite/app/scripts/controllers/mapController.js"></script>
-  <!-- endbuild -->
-
-
-
+  <!-- Debug Model -->
+  <div>
+      <p>Map Center:{{ centerProperty }}</p>
+      <p>NaviEntity:{{ NaviEntity }}</p>
+  </div>
 
 </body>
 </html>
