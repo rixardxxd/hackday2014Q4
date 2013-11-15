@@ -20,10 +20,36 @@ angular.module('hackday', ['google-maps'])
                     var server = photo[i].server;
                     var id = photo[i].id;
                     var secret = photo[i].secret;
-                var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+                    var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+                    $log.info(url_t);
                     $log.info(url);
 
+
+//                    var object = {};
+//                    object.lng = lon;
+//                    object.lat = lat;
+//                    object.url = url;
+//                  //  object.icon = image;
+//                    object.infoWindowContent = '<div><img src="'+url_t+'"</div>';
+//                    $scope.markersProperty.push(object);
+
+
                 }
+
+                 var object = {};
+                    object.longitude = 122;
+                    object.latitude = 37;
+                    object.url = 'http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg';
+                    var icon = {};
+                    var size = new google.maps.Size(40,40);
+                    icon.url ='http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg';
+                    icon.scaledSize = size;
+                   // object.icon = icon;
+
+                    object.infoWindow = '<div><a href="http://farm5.static.flickr.com/4001/4293638636_9035fdc63d.jpg" ><img src="http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg"></a></div>';
+                    $scope.markersProperty.push(object);
+
             }
         )
     };
@@ -32,11 +58,11 @@ angular.module('hackday', ['google-maps'])
     var radius = 1;
 
 
-    $scope.NaviEntity=
-    {
-        from:{ address:'', latlng:''},
-        to:{ address:'', latlng:''}
-    }
+    $scope.NaviEntity= '1';
+//    {
+//        from:{ address:'', latlng:''},
+//        to:{ address:'', latlng:''}
+//    }
 
     $scope.centerProperty =
             {
@@ -81,10 +107,19 @@ angular.module('hackday', ['google-maps'])
                     $log.log("user defined event on map directive with scope", this);
                     $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
                   }
-            }
+            },
+            fit: true
+
+
 
         }
     );
+
+
+
+
+
+
 
     $scope.search=function(ori, dest)
     {

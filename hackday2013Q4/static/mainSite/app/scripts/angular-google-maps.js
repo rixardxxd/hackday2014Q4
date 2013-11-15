@@ -186,7 +186,9 @@
         if (that.findMarker(lat, lng) != null) {
           return;
         }
-        
+         console.log("url" + url);
+
+
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(lat, lng),
           map: _instance,
@@ -198,10 +200,13 @@
         }
         
         if (url) {
-          
+          console.log("url" + url);
+
         }
 
         if (infoWindowContent != null) {
+
+
           var infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
           });
