@@ -15,40 +15,25 @@ angular.module('hackday', ['google-maps'])
             function(json){
 
                 var photo = json.query.results.photo;
-                for(var i = 0;i<photo.length ; i++){
-                    var farm = photo[i].farm;
-                    var server = photo[i].server;
-                    var id = photo[i].id;
-                    var secret = photo[i].secret;
+
+                if(photo != null){
+                    var farm = photo[0].farm;
+                    var server = photo[0].server;
+                    var id = photo[0].id;
+                    var secret = photo[0].secret;
                     var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
                     var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-                    $log.info(url_t);
-                    $log.info(url);
 
+                    var object = {};
+                    object.longitude = lon;
+                    object.latitude = lat;
 
-//                    var object = {};
-//                    object.lng = lon;
-//                    object.lat = lat;
-//                    object.url = url;
-//                  //  object.icon = image;
-//                    object.infoWindowContent = '<div><img src="'+url_t+'"</div>';
-//                    $scope.markersProperty.push(object);
-
+                    object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                    $scope.markersProperty.push(object);
 
                 }
 
-                 var object = {};
-                    object.longitude = 122;
-                    object.latitude = 37;
-                    object.url = 'http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg';
-                    var icon = {};
-                    var size = new google.maps.Size(40,40);
-                    icon.url ='http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg';
-                    icon.scaledSize = size;
-                   // object.icon = icon;
 
-                    object.infoWindow = '<div><a href="http://farm5.static.flickr.com/4001/4293638636_9035fdc63d.jpg" ><img src="http://farm5.static.flickr.com/4001/4293638636_9035fdc63d_t.jpg"></a></div>';
-                    $scope.markersProperty.push(object);
 
             }
         )
@@ -59,11 +44,10 @@ angular.module('hackday', ['google-maps'])
 
 
 
-    $scope.NaviEntity= '1';
-//    {
-//        from:{ address:'', latlng:''},
-//        to:{ address:'', latlng:''}
-//    }
+    $scope.NaviEntity = {
+        from:{ address:'', latlng:{}},
+        to:{ address:'', latlng:{}}
+    }
 
 
     $scope.centerProperty =
@@ -117,6 +101,47 @@ angular.module('hackday', ['google-maps'])
         }
     );
 
+
+     function getGeoByAddress(address , onSuccess, onFail)
+    {
+        var geocoder = new google.maps.Geocoder();
+
+        console.log("GetGeoByAddress");
+
+        //address = '701 first ave, sunnyvale';
+        geocoder.geocode( { 'address': address},
+        function(results, status)
+        {
+            if (status == google.maps.GeocoderStatus.OK)
+            {
+                //map.setCenter(results[0].geometry.location);
+                //var marker = new google.maps.Marker({
+                //    map: map,
+                //    position: results[0].geometry.location
+                //});
+                console.log("Geocoding : found "+results.length+" results for address "+address);
+                //console.log("GeoCoding Result : "+results[0].geometry.location);
+
+                //temporarily, directly use first one as result
+                onSuccess(results[0].geometry.location);
+            } else
+            {
+                console.log("Error fetching Locations : " + status);
+                showError("Failed to find location : "+address);
+                onFail();
+            }
+        });
+    }
+
+    function getRouteFromEntity()
+    {
+        console.log("Start Routing");
+        console.log("NaviEntity="+JSON.stringify($scope.NaviEntity));
+
+
+    }
+
+
      $scope.search=function(ori, dest)
     {
         syncCount=0;
@@ -136,6 +161,36 @@ angular.module('hackday', ['google-maps'])
                 syncCount++;
                 if(syncCount==2)
                     getRouteFromEntity();
+
+                        GeoLibrary.getFlickrAPI(latlng.pb,latlng.ob,20,false).then(
+                    function(json){
+                        if(json.query.results == null){
+                            showError("no picture is found between this two address.")
+                            return;
+                        }
+                        var photo = json.query.results.photo;
+
+                        if(photo != null){
+                            var farm = photo[0].farm;
+                            var server = photo[0].server;
+                            var id = photo[0].id;
+                            var secret = photo[0].secret;
+                            var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                            var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+
+                            var object = {};
+                            object.longitude = latlng.pb;
+                            object.latitude = latlng.ob;
+
+                            object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                            $scope.markersProperty.push(object);
+
+                        }
+
+
+
+                    }
+                )
             },
             function()
             {
@@ -151,6 +206,36 @@ angular.module('hackday', ['google-maps'])
                 syncCount++;
                 if(syncCount==2)
                     getRouteFromEntity();
+
+                GeoLibrary.getFlickrAPI(latlng.longitude,latlng.latitude,20,false).then(
+                    function(json){
+                        if(json.query.results == null){
+                            showError("no picture is found between this two address.")
+                            return;
+                        }
+                        var photo = json.query.results.photo;
+
+                        if(photo != null){
+                            var farm = photo[0].farm;
+                            var server = photo[0].server;
+                            var id = photo[0].id;
+                            var secret = photo[0].secret;
+                            var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                            var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+
+                            var object = {};
+                            object.longitude = lon;
+                            object.latitude = lat;
+
+                            object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                            $scope.markersProperty.push(object);
+
+                        }
+
+
+
+                    }
+                )
             },
             function()
             {
