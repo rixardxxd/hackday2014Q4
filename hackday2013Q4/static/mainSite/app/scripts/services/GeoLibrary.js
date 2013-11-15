@@ -40,10 +40,10 @@ angular.module('hackday')
         return deferred.promise;
     }
 
-
+/*
     functions.getGeoByAddress = function(address)
     {
-        address = '701 first ave, sunnyvale';
+        //address = '701 first ave, sunnyvale';
         geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK)
         {
@@ -52,18 +52,24 @@ angular.module('hackday')
             //    map: map,
             //    position: results[0].geometry.location
             //});
+            console.log("Geocoding : found "+results.length+" results for address "+address);
+            //console.log("GeoCoding Result : "+results[0].geometry.location);
 
-            console.log("GeoCoding Result : "+results[0].geometry.location);
+            //temporarily, directly use first one as result
+            console.log(results[0].geometry.location)
+            return results[0].geometry.location;
         } else
         {
-            alert("Geocode was not successful for the following reason: " + status);
+            console.log("Error fetching Locations : " + status);
+            showError("Failed to find location : "+address);
+            return null;
         }
-    });
-
-
-
+        });
     };
-        var fixedEncodeURIComponent = function(str) {
+*/
+
+    var fixedEncodeURIComponent = function(str)
+    {
         return encodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\*/g, "%2A").replace(/\"/g, "%22");
     };
     var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';

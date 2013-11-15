@@ -103,9 +103,9 @@
 
 
   <!-- Debug Model -->
-  <div>
-      <p>Map Center:{{ centerProperty }}</p>
-      <p>NaviEntity:{{ NaviEntity }}</p>
+  <div ng-controller="mapController">
+      <p ng-bind-template="Map Center:{{ scope.centerProperty }}"></p>
+      <p> Navi : {{ NaviEntity }} </p>
   </div>
 
 </body>
