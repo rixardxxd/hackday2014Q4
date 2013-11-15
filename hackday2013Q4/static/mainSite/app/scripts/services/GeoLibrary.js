@@ -68,9 +68,10 @@ angular.module('hackday')
     };
     var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
 
-     functions.getFlickrAPI = function(lon, lat, radius, gallery) {
+    functions.getFlickrAPI = function(lon, lat, radius, gallery)
+    {
             var deferred = $q.defer();
-            var query = 'select id, owner from flickr.photos.search where lat="' + lat + '" and lon="'+ lon + '" and radius="' +radius+'" and sort="interestingness-desc" and api_key="92bd0de55a63046155c09f1a06876875"';
+            var query = 'select farm, server,id,secret from flickr.photos.search where lat="' + lat + '" and lon="'+ lon + '" and radius="' +radius+'" and sort="interestingness-desc" and api_key="92bd0de55a63046155c09f1a06876875"';
             var url = 'http://query.yahooapis.com/v1/public/yql?q=' + fixedEncodeURIComponent(query) + format;
 
             console.log(url);
@@ -85,6 +86,10 @@ angular.module('hackday')
                     deferred.reject(json);
             });
             return deferred.promise;
-        };
+     };
+
+
+
+
     return functions;
   }]);

@@ -3,7 +3,34 @@ angular.module('hackday', ['google-maps'])
 {
     google.maps.visualRefresh = true;
 
+
+    $scope.doSearch = function(){
+
+
+        var lon = -122;
+        var lat = 37;
+        var radius = 10;
+
+        GeoLibrary.getFlickrAPI(lon,lat,radius,false).then(
+            function(json){
+
+                var photo = json.query.results.photo;
+                for(var i = 0;i<photo.length ; i++){
+                    var farm = photo[i].farm;
+                    var server = photo[i].server;
+                    var id = photo[i].id;
+                    var secret = photo[i].secret;
+                var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+                    $log.info(url);
+
+                }
+            }
+        )
+    };
+
+
     var radius = 1;
+
 
     $scope.NaviEntity=
     {
@@ -90,20 +117,13 @@ angular.module('hackday', ['google-maps'])
             });
     };
 
-/*
-    GeoLibrary.getFlickrAPI(lon,lat,radius,false).then(
-            function(json){
-
-
-            },
-        function(json){
-
-        }
-
-    );
-*/
 }]);
 
+
+function showError(message)
+{
+    alert(message);
+}
 
 
 angular
