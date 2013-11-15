@@ -15,15 +15,26 @@ angular.module('hackday', ['google-maps'])
             function(json){
 
                 var photo = json.query.results.photo;
-                for(var i = 0;i<photo.length ; i++){
-                    var farm = photo[i].farm;
-                    var server = photo[i].server;
-                    var id = photo[i].id;
-                    var secret = photo[i].secret;
-                var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-                    $log.info(url);
+
+                if(photo != null){
+                    var farm = photo[0].farm;
+                    var server = photo[0].server;
+                    var id = photo[0].id;
+                    var secret = photo[0].secret;
+                    var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+
+                    var object = {};
+                    object.longitude = lon;
+                    object.latitude = lat;
+
+                    object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                    $scope.markersProperty.push(object);
 
                 }
+
+
+
             }
         )
     };
@@ -32,10 +43,12 @@ angular.module('hackday', ['google-maps'])
     var radius = 1;
 
 
+
     $scope.NaviEntity = {
         from:{ address:'', latlng:{}},
         to:{ address:'', latlng:{}}
     }
+
 
     $scope.centerProperty =
             {
@@ -80,11 +93,14 @@ angular.module('hackday', ['google-maps'])
                     $log.log("user defined event on map directive with scope", this);
                     $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
                   }
-            }
+
+            },
+            fit: true
         }
     );
 
-    function getGeoByAddress(address , onSuccess, onFail)
+
+     function getGeoByAddress(address , onSuccess, onFail)
     {
         var geocoder = new google.maps.Geocoder();
 
@@ -151,6 +167,7 @@ angular.module('hackday', ['google-maps'])
                     for( var i in points)
                     {
                         var point = points[i];
+                        addMarker(point);
                     }
 
                     //showSteps(response);
@@ -165,8 +182,41 @@ angular.module('hackday', ['google-maps'])
     }
 
 
-    var syncCount=0;
-    $scope.search=function(ori, dest)
+    function addMarker(latlng)
+    {
+                    GeoLibrary.getFlickrAPI(latlng.pb,latlng.ob,radius,false).then(
+                    function(json){
+                        if(json.query.results == null){
+                            showError("no picture is found between this two address.")
+                            return;
+                        }
+                        var photo = json.query.results.photo;
+
+                        if(photo != null){
+                            var farm = photo[0].farm;
+                            var server = photo[0].server;
+                            var id = photo[0].id;
+                            var secret = photo[0].secret;
+                            var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                            var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+
+                            var object = {};
+                            object.longitude = latlng.pb;
+                            object.latitude = latlng.ob;
+
+                            object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+
+
+                            $scope.markersProperty.push(object);
+                        }
+                    }
+                )
+    }
+
+
+
+
+     $scope.search=function(ori, dest)
     {
         syncCount=0;
         if(!ori || !dest)
