@@ -89,6 +89,7 @@ angular.module('hackday', ['google-maps'])
                     }
             });
     };
+
 /*
     GeoLibrary.getFlickrAPI(lon,lat,radius,false).then(
             function(json){
