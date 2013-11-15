@@ -224,15 +224,20 @@ angular.module('hackday', ['google-maps'])
                    var secret = photo.secret;
                    var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+                   GeoLibrary.getLocation(id).then(
+                       function(json){
+                           //to do , should be photo geoloc
+                           var location = json.query.results.photo.location;
+                           var object = {};
+                           object.longitude = location.longitude;
+                           object.latitude = location.latitude;
+                           object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                           $scope.markersProperty.push(object);
 
-                   //to do , should be photo geoloc
-                   var object = {};
-                   object.longitude = latlng.pb;
-                   object.latitude = latlng.ob;
-                   object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
-                   $scope.markersProperty.push(object);
+                           console.log("UniquePhotos1111111111 : "+JSON.stringify(location));
+                        }
 
-                   console.log("UniquePhotos : "+JSON.stringify(uniqueID));
+                  )
               }
         )
     }
