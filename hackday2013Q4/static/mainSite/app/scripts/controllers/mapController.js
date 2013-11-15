@@ -58,11 +58,13 @@ angular.module('hackday', ['google-maps'])
     var radius = 1;
 
 
+
     $scope.NaviEntity= '1';
 //    {
 //        from:{ address:'', latlng:''},
 //        to:{ address:'', latlng:''}
 //    }
+
 
     $scope.centerProperty =
             {
@@ -115,41 +117,48 @@ angular.module('hackday', ['google-maps'])
         }
     );
 
-
-
-
-
-
-
-    $scope.search=function(ori, dest)
+     $scope.search=function(ori, dest)
     {
+        syncCount=0;
+        if(!ori || !dest)
+        {
+            showError("Please input the start and end location!");
+            return;
+        }
+
         console.log("From : "+ori);
         console.log("To : "+dest);
 
-        var geocoder = new google.maps.Geocoder();
-
-        console.log("search, do geocoding!");
-        address = '701 first ave, sunnyvale';
-
-        geocoder.geocode(
-            { 'address': address},
-            function(results, status)
+        getGeoByAddress(ori,
+            function(latlng){
+                $scope.NaviEntity.from.address=ori;
+                $scope.NaviEntity.from.latlng=latlng;
+                syncCount++;
+                if(syncCount==2)
+                    getRouteFromEntity();
+            },
+            function()
             {
-                if (status == google.maps.GeocoderStatus.OK)
-                {
-                    //map.setCenter(results[0].geometry.location);
-                    //var marker = new google.maps.Marker({
-                    //    map: map,
-                    //    position: results[0].geometry.location
-                    //});
+                syncCount=0;
+                console.log("One Geocoding Failed, stop");
+            }
+        );
 
-                    console.log("GeoCoding Result : "+results[0].geometry.location);
-                }
-                else
-                    {
-                        alert("Geocode was not successful for the following reason: " + status);
-                    }
-            });
+        getGeoByAddress(dest,
+            function(latlng){
+                $scope.NaviEntity.to.address=dest;
+                $scope.NaviEntity.to.latlng=latlng;
+                syncCount++;
+                if(syncCount==2)
+                    getRouteFromEntity();
+            },
+            function()
+            {
+                syncCount=0;
+                console.log("One Geocoding Failed, stop");
+            }
+        );
+
     };
 
 }]);
