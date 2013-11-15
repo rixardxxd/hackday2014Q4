@@ -13,7 +13,6 @@ angular.module('hackday')
     var destination = "Montreal";
     var functions = {};
 
-
     functions.getRoute = function(origin,destination)
     {
         var deferred = $q.defer();
@@ -117,39 +116,36 @@ angular.module('hackday')
             //console.log(url);
 
             $http.jsonp(url).success(function(json) {
-                console.log(JSON.stringify(json));
+                //console.log(JSON.stringify(json));
            //     var quotes = json.query.results.quote;
                 // filter + format quotes here if you want
                 deferred.resolve(json);
             }).error(function(error) {
-                console.log(JSON.stringify(error));
+                console.error(JSON.stringify(error));
                     deferred.reject(json);
             });
             return deferred.promise;
      };
 
-      functions.getLocation = function(photoID)
+    functions.getLocation = function(photoID)
     {
             var deferred = $q.defer();
-            var query = 'select location from flickr.photos.info where photo_id="' + photoID + '" and api_key="92bd0de55a63046155c09f1a06876875"';
+            var query = 'select location,views,title from flickr.photos.info where photo_id="' + photoID + '" and api_key="92bd0de55a63046155c09f1a06876875"';
             var url = 'http://query.yahooapis.com/v1/public/yql?q=' + fixedEncodeURIComponent(query) + format;
 
-            console.log(url);
+            //console.log(url);
 
             $http.jsonp(url).success(function(json) {
-                console.log(JSON.stringify(json));
+                //console.log(JSON.stringify(json));
            //     var quotes = json.query.results.quote;
                 // filter + format quotes here if you want
                 deferred.resolve(json);
             }).error(function(error) {
-                console.log(JSON.stringify(error));
+                console.error(JSON.stringify(error));
                     deferred.reject(json);
             });
             return deferred.promise;
      };
-
-
-
 
     return functions;
   }]);

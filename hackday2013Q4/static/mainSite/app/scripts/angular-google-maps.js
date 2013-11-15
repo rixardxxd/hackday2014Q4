@@ -69,6 +69,7 @@
         o = angular.extend({}, _defaults, opts),
         that = this,
         currentInfoWindow = null;
+
       
       this.center = opts.center;
       this.zoom = o.zoom;
@@ -76,9 +77,12 @@
       this.dragging = false;
       this.selector = o.container;
       this.markers = [];
+      this.lastRoute=null; //last displayed route
+      this.route = []; //Ocean
       this.options = o.options;
       
-      this.draw = function () {
+      this.draw = function ()
+      {
         
         if (that.center == null) {
           // TODO log error
@@ -179,14 +183,33 @@
           "handler": handler
         });
       };
-      
+
+      this.displayRoute = function(points)
+      {
+          if(this.lastRoute!=null)
+                this.lastRoute.setMap(null);
+
+          var trainpath = new google.maps.Polyline(
+                {
+                 path: points,
+                 geodesic: true,
+                 strokeColor: '#3399FF',
+                 strokeOpacity: 0.5,
+                 strokeWeight: 10
+                 });
+          trainpath.setMap(_instance);
+
+
+          this.lastRoute = trainpath;
+      };
+
       this.addMarker = function (lat, lng, icon, infoWindowContent, label, url,
           thumbnail) {
         
         if (that.findMarker(lat, lng) != null) {
           return;
         }
-         console.log("url" + url);
+         //console.log("url" + url);
 
 
         var marker = new google.maps.Marker({
@@ -338,6 +361,7 @@
       scope: {
         center: "=center", // required
         markers: "=markers", // optional
+        route: "=route",   // optional Ocean
         latitude: "=latitude", // required
         longitude: "=longitude", // required
         zoom: "=zoom", // required
@@ -474,6 +498,16 @@
             }
           }); 
         }
+
+        //Ocean : routes
+        scope.$watch("route", function (newValue, oldValue)
+        {
+            //alert("Route Changed");
+            if(newValue.length==0)
+                return;
+
+            _m.displayRoute(newValue);
+        }, true);
         
         // Markers
         scope.$watch("markers", function (newValue, oldValue) {
@@ -550,8 +584,6 @@
           _m.draw();
         });
 
-
-        scope.$watch("routesToRender")
       }
     };
   }]);  

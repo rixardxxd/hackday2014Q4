@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
   <link href="http://fonts.googleapis.com/css?family=Finger+Paint|Quattrocento+Sans" rel="stylesheet" type="text/css">
+  <link href="static/mainSite/css/index.css" rel="stylesheet" type="text/css">
 
   <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet"> -->
 
@@ -22,7 +23,6 @@
   <script src="static/mainSite/app/scripts/ui-bootstrap-tpls-0.6.0.min.js"></script>
   <script src="static/mainSite/app/scripts/app.js"></script>
 
-  <script src="static/mainSite/css/index.css"></script>
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDlmzIwnsi5U6effDsCZmolOHJntNonFbE&sensor=false&language=en"></script>
   <script src="static/mainSite/app/scripts/angular-google-maps.js"></script>
   <script src="static/mainSite/app/scripts/controllers/mapController.js"></script>
@@ -92,6 +92,7 @@
        center="centerProperty"
        zoom="zoomProperty"
        markers="markersProperty"
+       route="routeProperty"
        latitude="clickedLatitudeProperty"
        longitude="clickedLongitudeProperty"
        mark-click="false"
@@ -99,13 +100,6 @@
        fit="true"
        events="eventsProperty"
        style="height: 500px; width: 80%; margin-top: 55px; margin-left: 10%;">
-  </div>
-
-
-  <!-- Debug Model -->
-  <div ng-controller="mapController">
-      <p ng-bind-template="Map Center:{{ scope.centerProperty }}"></p>
-      <p> Navi : {{ NaviEntity }} </p>
   </div>
 
 </body>

@@ -3,52 +3,12 @@ angular.module('hackday', ['google-maps'])
 {
     google.maps.visualRefresh = true;
 
-
-    $scope.doSearch = function(){
-
-
-        var lon = -122;
-        var lat = 37;
-        var radius = 10;
-
-        GeoLibrary.getFlickrAPI(lon,lat,radius,false).then(
-            function(json){
-
-                var photo = json.query.results.photo;
-
-                if(photo != null){
-                    var farm = photo[0].farm;
-                    var server = photo[0].server;
-                    var id = photo[0].id;
-                    var secret = photo[0].secret;
-                    var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
-                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-
-                    var object = {};
-                    object.longitude = lon;
-                    object.latitude = lat;
-
-                    object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
-                    $scope.markersProperty.push(object);
-
-                }
-
-
-
-            }
-        )
-    };
-
-
     var radius = 1;
-
-
 
     $scope.NaviEntity = {
         from:{ address:'', latlng:{}},
         to:{ address:'', latlng:{}}
     }
-
 
     $scope.centerProperty =
             {
@@ -80,6 +40,9 @@ angular.module('hackday', ['google-maps'])
             markersProperty:
             [
             ],
+
+            /** Ocean : route of points to render on map */
+            routeProperty:[],
 
             // These 2 properties will be set when clicking on the map
             clickedLatitudeProperty: null,
@@ -142,7 +105,7 @@ angular.module('hackday', ['google-maps'])
             //map: $scope.map
         }
 
-        var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+        //var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
         var request = {
             origin: $scope.NaviEntity.from.latlng,
@@ -163,7 +126,9 @@ angular.module('hackday', ['google-maps'])
                     //directionsDisplay.setDirections(response);
 
                     var points=first.overview_path;
-                    console.log(JSON.stringify(points));
+                    //console.log(JSON.stringify(points));
+                    renderRoute(points);
+
                     clearMarker();
                     for( var i in points)
                     {
@@ -180,6 +145,19 @@ angular.module('hackday', ['google-maps'])
                 }
         });
 
+    }
+
+    function renderRoute(points)
+    {
+/*        var trainpath = new google.maps.Polyline({
+                 path: coordinates,
+                 geodesic: true,
+                 strokeColor: '#FF0000',
+                 strokeOpacity: 1.0,
+                 strokeWeight: 2
+                 });
+        trainpath.setMap($scope.map);*/
+        $scope.routeProperty=points;
     }
 
     var uniqueID = {};
@@ -217,27 +195,38 @@ angular.module('hackday', ['google-maps'])
                    if(!photo)
                         return;
 
-
                    var farm = photo.farm;
                    var server = photo.server;
                    var id = photo.id;
                    var secret = photo.secret;
                    var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
                    var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-                   GeoLibrary.getLocation(id).then(
-                       function(json){
+
+                   var object = {};
+                   object.longitude = latlng.pb;
+                   object.latitude = latlng.ob;
+                   object.infoWindow = '<div><a href="'+url+'" ><img src="'+url_t+'"></a></div>';
+                   $scope.markersProperty.push(object);
+
+                   //console.log("UniquePhotos : "+JSON.stringify(location));
+
+                   GeoLibrary.getLocation(id).then
+                   (
+                       function(json)
+                       {
                            //to do , should be photo geoloc
+                           var info = json.query.results.photo;
                            var location = json.query.results.photo.location;
-                           var object = {};
+                           var title = info.title;
+                           var views = info.views;
+
                            object.longitude = location.longitude;
                            object.latitude = location.latitude;
-                           object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
-                           $scope.markersProperty.push(object);
+                           object.infoWindow = '<div class=\"infoWindow\"><h5>'+((title==null)?'Untitled':title)+'</h5><a href="'+ url +'" ><img src="'+url_t+'"></a><br>Views:'+views+'</div>';
 
-                           console.log("UniquePhotos1111111111 : "+JSON.stringify(location));
-                        }
+                       }
 
-                  )
+                   )
               }
         )
     }
@@ -247,6 +236,9 @@ angular.module('hackday', ['google-maps'])
 
      $scope.search=function(ori, dest)
     {
+        //$scope.routeProperty.push( new google.maps.LatLng(37,-122) );
+        //console.log(JSON.stringify($scope.routeProperty));
+
         syncCount=0;
         if(!ori || !dest)
         {
