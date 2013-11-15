@@ -164,6 +164,7 @@ angular.module('hackday', ['google-maps'])
 
                     var points=first.overview_path;
                     console.log(JSON.stringify(points));
+                    clearMarker();
                     for( var i in points)
                     {
                         var point = points[i];
@@ -181,36 +182,59 @@ angular.module('hackday', ['google-maps'])
 
     }
 
+    var uniqueID = {};
+
+    function clearMarker()
+    {
+        $scope.markersProperty=[];
+        uniqueID = {};
+
+    }
 
     function addMarker(latlng)
     {
-                    GeoLibrary.getFlickrAPI(latlng.pb,latlng.ob,radius,false).then(
-                    function(json){
-                        if(json.query.results == null){
-                            showError("no picture is found between this two address.")
+
+        GeoLibrary.getFlickrAPI(latlng.pb,latlng.ob,radius,false).then
+        (
+              function(json)
+              {
+                   if(json.query.results == null)
+                   {
+                            //showError("no picture is found between this two address.")
                             return;
-                        }
-                        var photo = json.query.results.photo;
+                   }
+                   var photos = json.query.results.photo;
+                   var photo = null;
+                   for(var i= 0; i<photos.length;i++)
+                   {
+                        if (uniqueID[''+photos[i].id])
+                            continue;
+                        photo = photos[i];
+                        uniqueID[''+photo.id] = true;
+                        break;
+                   }
 
-                        if(photo != null){
-                            var farm = photo[0].farm;
-                            var server = photo[0].server;
-                            var id = photo[0].id;
-                            var secret = photo[0].secret;
-                            var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
-                            var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
-
-                            var object = {};
-                            object.longitude = latlng.pb;
-                            object.latitude = latlng.ob;
-
-                            object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                   if(!photo)
+                        return;
 
 
-                            $scope.markersProperty.push(object);
-                        }
-                    }
-                )
+                   var farm = photo.farm;
+                   var server = photo.server;
+                   var id = photo.id;
+                   var secret = photo.secret;
+                   var url_t = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'_t.jpg';
+                   var url = 'http://farm'+farm+'.static.flickr.com/'+server+'/'+id+'_'+secret+'.jpg';
+
+                   //to do , should be photo geoloc
+                   var object = {};
+                   object.longitude = latlng.pb;
+                   object.latitude = latlng.ob;
+                   object.infoWindow = '<div><a href="' + url +'" ><img src="'+url_t+'"></a></div>';
+                   $scope.markersProperty.push(object);
+
+                   console.log("UniquePhotos : "+JSON.stringify(uniqueID));
+              }
+        )
     }
 
 
