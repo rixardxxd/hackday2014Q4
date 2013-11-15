@@ -4,6 +4,8 @@
 
 'use strict';
 
+var geocoder = new google.maps.Geocoder();
+
 angular.module('hackday')
   .factory('GeoLibrary', [ '$http', '$q','$log', function ($http, $q,$log)
   {
@@ -11,51 +13,10 @@ angular.module('hackday')
     var destination = "Montreal";
     var functions = {};
 
-//    functions.queryTestData = function()
-//    {
-//      var data=
-//      {
-//            start   : { geo : '' },
-//            end     : {         },
-//            route   : []
-//      };
-//
-//      return data;
-//    };
-//
-//    functions.getGeoByAddress = function(address)
-//    {
-//        test();
-//
-//
-//    };
 
-    functions.getRoute = function(origin,destination){
+    functions.getRoute = function(origin,destination)
+    {
         var deferred = $q.defer();
-//            $http.defaults.useXDomain = true;
-//            $http({
-//                method : 'GET',
-//                url : 'https://maps.googleapis.com/maps/api/directions/json',
-//                params: {
-//                    origin:origin,destination:destination,sensor:'false'
-//                   // key:'AIzaSyDlmzIwnsi5U6effDsCZmolOHJntNonFbE'
-//                }
-//            }).success(function (data,status,headers,config){
-//                     $log.info(data);
-//                $log.info(status);
-//                $log.info(headers);
-//                $log.info(config);
-//                    deferred.resolve(data,status,headers,config);
-//            }).error(function (data, status, headers, config) {
-//            //TODO: Show error message
-//                     $log.info(data);
-//                $log.info(status);
-//                $log.info(headers);
-//                $log.info(config);
-//                    deferred.reject(data,status,headers,config);
-//
-//
-//            });
 
         $http.jsonp('http://maps.googleapis.com/maps/api/directions/json?destination=Montreal&origin=Toronto&sensor=false&callback=JSON_CALLBACK')
         .success(function (data,status,headers,config){
@@ -73,16 +34,40 @@ angular.module('hackday')
                 $log.info(headers);
                 $log.info(config);
                     deferred.reject(data,status,headers,config);
+            }
+
+        );
+        return deferred.promise;
+    }
 
 
-            });
+    functions.getGeoByAddress = function(address)
+    {
+        address = '701 first ave, sunnyvale';
+        geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK)
+        {
+            //map.setCenter(results[0].geometry.location);
+            //var marker = new google.maps.Marker({
+            //    map: map,
+            //    position: results[0].geometry.location
+            //});
 
-            return deferred.promise;
+            console.log("GeoCoding Result : "+results[0].geometry.location);
+        } else
+        {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+    });
+
+
+
     };
         var fixedEncodeURIComponent = function(str) {
         return encodeURIComponent(str).replace(/[!'()]/g, escape).replace(/\*/g, "%2A").replace(/\"/g, "%22");
     };
     var format = '&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=JSON_CALLBACK';
+
      functions.getFlickrAPI = function(lon, lat, radius, gallery) {
             var deferred = $q.defer();
             var query = 'select farm, server,id,secret from flickr.photos.search where lat="' + lat + '" and lon="'+ lon + '" and radius="' +radius+'" and sort="interestingness-desc" and api_key="92bd0de55a63046155c09f1a06876875"';
@@ -97,9 +82,9 @@ angular.module('hackday')
                 deferred.resolve(json);
             }).error(function(error) {
                 console.log(JSON.stringify(error));
+                    deferred.reject(json);
             });
             return deferred.promise;
         };
     return functions;
   }]);
-

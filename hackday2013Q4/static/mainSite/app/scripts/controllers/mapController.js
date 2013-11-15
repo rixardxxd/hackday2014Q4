@@ -1,50 +1,11 @@
 angular.module('hackday', ['google-maps'])
-    .controller('mapController',['$scope', '$timeout', '$log','GeoLibrary','$http',function($scope, $timeout, $log,GeoLibrary,$http){
-
-     // Enable the new Google Maps visuals until it gets enabled by default.
-    // See http://googlegeodevelopers.blogspot.ca/2013/05/a-fresh-new-look-for-maps-api-for-all.html
+    .controller('mapController',['$scope', '$timeout', '$log','GeoLibrary','$http',function($scope, $timeout, $log,GeoLibrary,$http)
+{
     google.maps.visualRefresh = true;
 
-    $scope.doSearch = function(){
-//        $log.info("111");
-//        GeoLibrary.getRoute('Toronto','Montreal').then(
-//            function(data,status,headers,config){
-////                $log.info(data);
-////                $log.info(status);
-////                $log.info(headers);
-////                $log.info(config);
-////                $log.info("2222");
-//            },
-//            function(data,status,headers,config){
-////                $log.info(data);
-////                $log.info(status);
-////                $log.info(headers);
-////                $log.info(config);
-////                $log.info("3333");
-//            }
-//        );
 
-//        $http.jsonp('http://maps.googleapis.com/maps/api/directions/json?destination=Montreal&origin=Toronto&sensor=false&format=json&callback=JSON_CALLBACK')
-//        .success(function (json){
-//                $log.info('aaa');
-//
-//
-//                console.log(JSON.stringify(json));
-////                $log.info(status);
-////                $log.info(headers);
-////                $log.info(config);
-//
-//            }).error(function (json) {
-//            //TODO: Show error message
-//                $log.info('bbbbb');
-//                     console.log(JSON.stringify(json));
-////                $log.info(status);
-////                $log.info(headers);
-////                $log.info(config);
-//
-//
-//
-//            });
+    $scope.doSearch = function(){
+
 
         var lon = -122;
         var lat = 37;
@@ -63,15 +24,30 @@ angular.module('hackday', ['google-maps'])
                     $log.info(url);
 
                 }
-
             }
-
-        );
+        )
     };
+
+
+    var radius = 1;
+
+
+    $scope.NaviEntity=
+    {
+        from:{ address:'', latlng:''},
+        to:{ address:'', latlng:''}
+    }
+
+    $scope.centerProperty =
+            {
+                latitude: 37.4168811,
+                longitude: -122.02561550000001
+            };
 
 
 
     angular.extend($scope,
+
         {
             position:
             {
@@ -83,18 +59,14 @@ angular.module('hackday', ['google-maps'])
             },
 
             /** the initial center of the map */
-            centerProperty:
-            {
-                latitude: 45,
-                longitude: -73
-            },
+
 
             /** the initial zoom level of the map */
-            zoomProperty: 4,
+            zoomProperty: 14,
 
             /** list of markers to put in the map */
             markersProperty:
-            [ {latitude: 45,longitude: -74}
+            [
             ],
 
             // These 2 properties will be set when clicking on the map
@@ -110,10 +82,43 @@ angular.module('hackday', ['google-maps'])
                     $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
                   }
             }
-        });
 
+        }
+    );
 
-    }])
+    $scope.search=function(ori, dest)
+    {
+        console.log("From : "+ori);
+        console.log("To : "+dest);
+
+        var geocoder = new google.maps.Geocoder();
+
+        console.log("search, do geocoding!");
+        address = '701 first ave, sunnyvale';
+
+        geocoder.geocode(
+            { 'address': address},
+            function(results, status)
+            {
+                if (status == google.maps.GeocoderStatus.OK)
+                {
+                    //map.setCenter(results[0].geometry.location);
+                    //var marker = new google.maps.Marker({
+                    //    map: map,
+                    //    position: results[0].geometry.location
+                    //});
+
+                    console.log("GeoCoding Result : "+results[0].geometry.location);
+                }
+                else
+                    {
+                        alert("Geocode was not successful for the following reason: " + status);
+                    }
+            });
+    };
+
+}]);
+
 
 
 angular
@@ -131,3 +136,4 @@ angular
             };
         });
     });
+
