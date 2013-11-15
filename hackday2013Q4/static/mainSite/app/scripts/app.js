@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hackday', ['ngRoute',["google-maps"]])
+angular.module('hackday', ['ngRoute',"google-maps"])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
