@@ -114,7 +114,7 @@ angular.module('hackday')
             var query = 'select farm, server,id,secret from flickr.photos.search where lat="' + lat + '" and lon="'+ lon + '" and radius="' +radius+'" and sort="interestingness-desc" and api_key="92bd0de55a63046155c09f1a06876875"';
             var url = 'http://query.yahooapis.com/v1/public/yql?q=' + fixedEncodeURIComponent(query) + format;
 
-            console.log(url);
+            //console.log(url);
 
             $http.jsonp(url).success(function(json) {
                 console.log(JSON.stringify(json));
