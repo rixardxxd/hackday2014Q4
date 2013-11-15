@@ -81,7 +81,6 @@ angular.module('hackday', ['google-maps'])
                     $log.log("user defined event: " + eventName, mapModel, originalEventArgs);
                   }
             }
-
         }
     );
 
@@ -121,12 +120,47 @@ angular.module('hackday', ['google-maps'])
         console.log("Start Routing");
         console.log("NaviEntity="+JSON.stringify($scope.NaviEntity));
 
+        var directionsService = new google.maps.DirectionsService();
 
+        var rendererOptions = {
+            //map: $scope.map
+        }
 
+        var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 
+        var request = {
+            origin: $scope.NaviEntity.from.latlng,
+            destination: $scope.NaviEntity.to.latlng,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
 
+        directionsService.route(request,
+            function(response, status)
+            {
+                if (status == google.maps.DirectionsStatus.OK)
+                {
+                    //temporarily, only use one route
+                    var first = response.routes[0];
+                    //console.log("Route Warning : "+first.warnings);
+                    //console.log(JSON.stringify(first));
+                    //directionsDisplay.setMap($scope.map);
+                    //directionsDisplay.setDirections(response);
 
+                    var points=first.overview_path;
+                    console.log(JSON.stringify(points));
+                    for( var i in points)
+                    {
+                        var point = points[i];
+                    }
 
+                    //showSteps(response);
+                }
+                else
+                {
+                    console.log("Failed to route from Origin to Destination");
+                    showError("Sorry, we failed to route from \'"+$scope.NaviEntity.from.address+"\' to \'"+$scope.NaviEntity.to.address+"\'");
+                }
+        });
 
     }
 

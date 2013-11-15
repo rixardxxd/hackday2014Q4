@@ -534,6 +534,7 @@
             _m.draw();
           }
         }, true);
+
         
         scope.$watch("zoom", function (newValue, oldValue) {
           if (newValue === oldValue) {
@@ -543,6 +544,9 @@
           _m.zoom = newValue;
           _m.draw();
         });
+
+
+        scope.$watch("routesToRender")
       }
     };
   }]);  
